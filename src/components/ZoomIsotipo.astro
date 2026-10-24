@@ -1,0 +1,98 @@
+---
+// Escena fijada: un velo grafito con el isotipo recortado. Al deslizar, el
+// isotipo crece (escala uniforme, sin deformar) hasta que su interior marfil
+// llena la pantalla y da paso al manifiesto.
+import { ISO_ACENTO, ISO_ESTRUCTURA } from "../lib/marca";
+---
+
+<section class="zoom" data-zoom aria-label="Creatividad, tecnología y resultados">
+  <div class="zoom-escena">
+    <div class="zoom-fondo">
+      <p class="zoom-palabras titulo" data-zoom-palabras>
+        <span>Creatividad.</span>
+        <span>Tecnología.</span>
+        <span>Resultados.</span>
+      </p>
+    </div>
+
+    <svg class="zoom-velo" data-zoom-velo aria-hidden="true">
+      <defs>
+        <mask id="mascara-iso" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+          <rect width="100%" height="100%" fill="#fff"></rect>
+          <g data-zoom-iso>
+            <path d={ISO_ESTRUCTURA} fill="#000"></path>
+            <path d={ISO_ACENTO} fill="#000"></path>
+          </g>
+        </mask>
+      </defs>
+      <rect width="100%" height="100%" fill="#2A2F31" mask="url(#mascara-iso)"></rect>
+    </svg>
+
+    <p class="zoom-indicacion etiqueta" data-zoom-indicacion>Dos mundos, una sola marca</p>
+  </div>
+</section>
+
+<style>
+  .zoom {
+    position: relative;
+    height: 260vh;
+    background: var(--grafito);
+  }
+  .zoom-escena {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+  }
+  .zoom-fondo {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: var(--marfil);
+    color: var(--carbon);
+  }
+  .zoom-palabras {
+    display: grid;
+    justify-items: center;
+    font-size: clamp(40px, 8.4vw, 150px);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    text-align: center;
+  }
+  .zoom-palabras span:nth-child(2) {
+    color: var(--dorado-oscuro);
+  }
+  .zoom-palabras span:nth-child(3) {
+    color: var(--petroleo);
+  }
+  .zoom-velo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .zoom-indicacion {
+    position: absolute;
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%);
+    color: rgb(244 241 234 / 0.55);
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  /* Sin animación: escena estática y compacta */
+  :global(html:not(.js-anim)) .zoom {
+    height: auto;
+  }
+  :global(html:not(.js-anim)) .zoom-escena {
+    position: relative;
+    height: 70vh;
+  }
+  :global(html:not(.js-anim)) .zoom-velo,
+  :global(html:not(.js-anim)) .zoom-indicacion {
+    display: none;
+  }
+</style>

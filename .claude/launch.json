@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "aps-dev",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--dir", "/Users/nacho/Proyectos/aranaprostudio.com", "dev", "--port", "4321"],
+      "port": 4321
+    }
+  ]
+}

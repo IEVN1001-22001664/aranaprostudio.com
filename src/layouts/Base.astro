@@ -1,0 +1,83 @@
+---
+import "../styles/global.css";
+import { SITIO } from "../lib/sitio";
+
+interface Props {
+  titulo?: string;
+  descripcion?: string;
+}
+
+const { titulo = `${SITIO.nombre} — ${SITIO.vision}`, descripcion = SITIO.descripcion } = Astro.props;
+const canonica = new URL(Astro.url.pathname, SITIO.url).href;
+const og = new URL("/og.png", SITIO.url).href;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: SITIO.nombre,
+  url: SITIO.url,
+  email: SITIO.correo,
+  telephone: SITIO.telefono,
+  slogan: SITIO.lema,
+  description: SITIO.descripcion,
+  founder: { "@type": "Person", name: SITIO.autor },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "León",
+    addressRegion: "Guanajuato",
+    addressCountry: "MX",
+  },
+  sameAs: SITIO.redes.map((r) => r.url),
+};
+---
+
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonica} />
+    <meta name="theme-color" content="#2A2F31" />
+    <meta name="color-scheme" content="dark light" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:site_name" content={SITIO.nombre} />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={canonica} />
+    <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Activa los estados iniciales de animación solo si hay JS y movimiento permitido -->
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) d.classList.add("js-anim");
+        try {
+          if (sessionStorage.getItem("aps-intro")) d.classList.add("sin-intro");
+        } catch (e) {}
+        // Red de seguridad: si algo falla, el contenido se muestra igual
+        setTimeout(function () {
+          if (!d.classList.contains("listo")) d.classList.remove("js-anim");
+        }, 6000);
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+    <slot />
+    <div class="grano" aria-hidden="true"></div>
+  </body>
+</html>

@@ -1,0 +1,221 @@
+---
+import Isotipo from "./Isotipo.astro";
+import { LINEAS, SITIO } from "../lib/sitio";
+
+const m = LINEAS.moments;
+const b = LINEAS.business;
+const wa = (texto: string) => `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(texto)}`;
+---
+
+<section class="lineas" id="lineas" data-tema="oscuro">
+  <div class="lineas-cabeza contenedor">
+    <p class="etiqueta" data-revelar>02 · Líneas</p>
+    <h2 class="titulo" data-dividir>Una marca madre.<br />Dos formas de contar.</h2>
+  </div>
+
+  <div class="lineas-paneles" data-lineas>
+    <article class="panel panel--moments" data-panel>
+      <div class="panel-iso" aria-hidden="true"><Isotipo /></div>
+      <header class="panel-cabeza">
+        <img src="/marca/aps-moments-oscuro.svg" alt="APS Moments" width="194" height="60" loading="lazy" />
+        <span class="etiqueta">{m.usuario}</span>
+      </header>
+      <div class="panel-cuerpo">
+        <p class="panel-promesa acento-moments">{m.promesa}</p>
+        <p class="panel-texto">{m.texto}</p>
+        <dl class="panel-datos">
+          <div><dt>Público</dt><dd>{m.publico}</dd></div>
+          <div><dt>Tono</dt><dd>{m.tono}</dd></div>
+        </dl>
+        <a class="boton" href={wa("Hola, quiero agendar una fecha con APS Moments.")} target="_blank" rel="noopener">
+          {m.cta}
+          <svg class="flecha" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"
+            ><path d="M1 8h13M9 3l5 5-5 5"></path></svg
+          >
+        </a>
+      </div>
+    </article>
+
+    <article class="panel panel--business" data-panel>
+      <div class="panel-iso" aria-hidden="true"><Isotipo /></div>
+      <header class="panel-cabeza">
+        <img src="/marca/aps-business-claro.svg" alt="APS Business" width="194" height="60" loading="lazy" />
+        <span class="etiqueta">{b.usuario}</span>
+      </header>
+      <div class="panel-cuerpo">
+        <p class="panel-promesa">{b.promesa}</p>
+        <p class="panel-texto">{b.texto}</p>
+        <dl class="panel-datos">
+          <div><dt>Público</dt><dd>{b.publico}</dd></div>
+          <div><dt>Tono</dt><dd>{b.tono}</dd></div>
+        </dl>
+        <a class="boton" href={wa("Hola, me interesa APS Business para mi negocio.")} target="_blank" rel="noopener">
+          {b.cta}
+          <svg class="flecha" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"
+            ><path d="M1 8h13M9 3l5 5-5 5"></path></svg
+          >
+        </a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .lineas {
+    background: var(--grafito);
+    color: var(--marfil);
+    padding-top: clamp(90px, 15vh, 180px);
+  }
+  .lineas-cabeza {
+    display: grid;
+    gap: 22px;
+    margin-bottom: clamp(48px, 8vh, 90px);
+  }
+  .lineas-cabeza .etiqueta {
+    color: var(--dorado);
+  }
+  .lineas-cabeza h2 {
+    font-size: clamp(34px, 5.6vw, 96px);
+    letter-spacing: -0.035em;
+  }
+
+  .lineas-paneles {
+    display: flex;
+    min-height: 92vh;
+  }
+  .panel {
+    position: relative;
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 48px;
+    padding: clamp(28px, 4vw, 64px);
+    overflow: hidden;
+    isolation: isolate;
+    transition: flex-grow 0.9s var(--ease-out);
+  }
+  @media (hover: hover) and (min-width: 901px) {
+    .lineas-paneles:hover .panel {
+      flex-grow: 0.75;
+    }
+    .lineas-paneles .panel:hover {
+      flex-grow: 1.35;
+    }
+  }
+
+  .panel--moments {
+    background: var(--carbon);
+    color: var(--marfil);
+  }
+  .panel--business {
+    background: var(--blanco);
+    color: var(--carbon);
+  }
+
+  .panel-iso {
+    position: absolute;
+    right: -12%;
+    bottom: -16%;
+    z-index: -1;
+    width: 78%;
+    max-width: 640px;
+    transition: transform 1.2s var(--ease-out);
+  }
+  .panel-iso :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+  .panel--moments .panel-iso {
+    color: rgb(201 165 78 / 0.1);
+  }
+  .panel--business .panel-iso {
+    color: rgb(31 111 120 / 0.07);
+  }
+  /* El isotipo "avanza hacia arriba" sobre su diagonal de 37° */
+  .panel:hover .panel-iso {
+    transform: translate(-3.2%, -2.4%);
+  }
+
+  .panel-cabeza {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .panel-cabeza img {
+    width: clamp(160px, 15vw, 210px);
+    height: auto;
+  }
+  .panel-cabeza .etiqueta {
+    font-size: 11px;
+    opacity: 0.7;
+  }
+
+  .panel-cuerpo {
+    display: grid;
+    gap: 22px;
+    max-width: 520px;
+  }
+  .panel-promesa {
+    font-size: clamp(34px, 3.6vw, 62px);
+    line-height: 1.04;
+  }
+  .panel--moments .panel-promesa {
+    color: var(--marfil);
+  }
+  .panel--business .panel-promesa {
+    font-family: var(--f-texto);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .panel-texto {
+    font-size: clamp(16px, 1.2vw, 19px);
+    opacity: 0.82;
+  }
+  .panel-datos {
+    display: grid;
+    gap: 10px;
+    margin: 6px 0 10px;
+    font-size: 15px;
+  }
+  .panel-datos div {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 12px;
+    padding-top: 10px;
+    border-top: 1px solid currentColor;
+    border-color: rgb(127 127 127 / 0.25);
+  }
+  .panel-datos dd {
+    margin: 0;
+  }
+  .panel--moments dt {
+    color: var(--dorado);
+  }
+  .panel--business dt {
+    color: var(--petroleo);
+  }
+  .panel .boton {
+    justify-self: start;
+  }
+  .panel--moments .boton {
+    --b-fondo: var(--dorado);
+    --b-texto: var(--grafito);
+    --b-relleno: var(--marfil);
+  }
+  .panel--business .boton {
+    --b-fondo: var(--petroleo);
+    --b-texto: var(--marfil);
+    --b-relleno: var(--carbon);
+  }
+
+  @media (max-width: 900px) {
+    .lineas-paneles {
+      flex-direction: column;
+    }
+    .panel {
+      min-height: 86vh;
+    }
+  }
+</style>

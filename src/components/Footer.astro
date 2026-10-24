@@ -1,0 +1,121 @@
+---
+import Logo from "./Logo.astro";
+import { NAV, SITIO } from "../lib/sitio";
+
+const anio = new Date().getFullYear();
+---
+
+<footer class="pie" data-tema="oscuro">
+  <div class="contenedor">
+    <div class="pie-arriba">
+      <div class="pie-lema">
+        <div class="barras" aria-hidden="true"><span></span><span></span><span></span></div>
+        <span class="etiqueta">{SITIO.lema}</span>
+      </div>
+      <nav aria-label="Pie de página">
+        <ul class="pie-nav">
+          {
+            NAV.map((n) => (
+              <li>
+                <a class="enlace" href={n.href}>
+                  {n.texto}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <a href="#inicio" class="pie-arriba-boton" data-magnetico aria-label="Volver arriba">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"
+          ><path d="M8 15V2M3 7l5-5 5 5"></path></svg
+        >
+      </a>
+    </div>
+
+    <!-- Logotipo oficial a gran escala: se revela al llegar al final -->
+    <div class="pie-logo" data-pie-logo>
+      <Logo />
+    </div>
+
+    <div class="pie-abajo">
+      <span>© {anio} {SITIO.nombre}</span>
+      <span>{SITIO.ciudad}</span>
+      <a class="enlace" href={`mailto:${SITIO.correo}`}>{SITIO.correo}</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .pie {
+    background: var(--grafito);
+    color: var(--marfil);
+    padding-block: 40px 28px;
+    overflow: hidden;
+  }
+  .pie-arriba {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding-top: 32px;
+    border-top: 1px solid var(--linea-oscura);
+  }
+  .pie-lema {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .pie-lema .etiqueta {
+    font-size: 10px;
+    color: rgb(244 241 234 / 0.55);
+  }
+  .pie-lema .barras span {
+    width: 24px;
+    height: 3px;
+  }
+  .pie-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    font-size: 15px;
+  }
+  .pie-arriba-boton {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--linea-oscura);
+    transition:
+      background 0.4s ease,
+      color 0.4s ease;
+  }
+  .pie-arriba-boton:hover {
+    background: var(--marfil);
+    color: var(--grafito);
+  }
+  .pie-arriba-boton svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* El área de protección (x) se respeta con el padding vertical */
+  .pie-logo {
+    padding-block: clamp(50px, 8vw, 120px) clamp(40px, 6vw, 90px);
+    overflow: hidden;
+  }
+  .pie-logo :global(.logo) {
+    width: 100%;
+    height: auto;
+  }
+
+  .pie-abajo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 24px;
+    font-size: 13px;
+    color: rgb(244 241 234 / 0.55);
+  }
+</style>

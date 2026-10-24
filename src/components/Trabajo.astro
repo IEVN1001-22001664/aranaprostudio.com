@@ -1,0 +1,161 @@
+---
+import Isotipo from "./Isotipo.astro";
+import { PROYECTOS } from "../lib/sitio";
+---
+
+<section class="trabajo" id="trabajo" data-tema="claro">
+  <div class="contenedor">
+    <div class="trabajo-cabeza">
+      <p class="etiqueta" data-revelar>05 · Trabajo</p>
+      <h2 class="titulo" data-dividir>Proyectos que<br />hablan por sí solos.</h2>
+    </div>
+
+    <div class="rejilla">
+      {
+        PROYECTOS.map((p, i) => (
+          <article class:list={["tarjeta", `tarjeta--${p.linea}`, { "tarjeta--ancha": i % 3 === 0 }]} data-tarjeta>
+            <div class="tarjeta-media" data-cursor="Ver">
+              <div class="tarjeta-imagen" data-parallax>
+                {p.imagen ? (
+                  <img src={p.imagen} alt={p.titulo} loading="lazy" decoding="async" />
+                ) : (
+                  <div class="tarjeta-vacia">
+                    <Isotipo />
+                    <span class="etiqueta">Próximamente</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div class="tarjeta-info">
+              <h3 class="titulo">{p.titulo}</h3>
+              <span class="tarjeta-meta">
+                {p.categoria} · {p.anio}
+              </span>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .trabajo {
+    background: var(--marfil);
+    color: var(--carbon);
+    padding-block: clamp(90px, 15vh, 180px);
+  }
+  .trabajo-cabeza {
+    display: grid;
+    gap: 22px;
+    margin-bottom: clamp(44px, 8vh, 90px);
+  }
+  .trabajo-cabeza .etiqueta {
+    color: var(--dorado-oscuro);
+  }
+  .trabajo-cabeza h2 {
+    font-size: clamp(34px, 5.6vw, 96px);
+    letter-spacing: -0.035em;
+  }
+
+  .rejilla {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: clamp(36px, 6vw, 90px) clamp(16px, 2vw, 28px);
+  }
+  .tarjeta {
+    grid-column: span 5;
+  }
+  .tarjeta--ancha {
+    grid-column: span 7;
+  }
+  .tarjeta:nth-child(2) {
+    margin-top: clamp(60px, 14vw, 220px);
+  }
+  .tarjeta:nth-child(4) {
+    grid-column: 6 / span 7;
+  }
+  .tarjeta:nth-child(4).tarjeta--ancha {
+    grid-column: 6 / span 7;
+  }
+
+  .tarjeta-media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--carbon);
+  }
+  .tarjeta--ancha .tarjeta-media {
+    aspect-ratio: 16 / 11;
+  }
+  .tarjeta-imagen {
+    position: absolute;
+    inset: -10% 0;
+    will-change: transform;
+  }
+  .tarjeta-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease-out);
+  }
+  .tarjeta:hover .tarjeta-imagen img {
+    transform: scale(1.05);
+  }
+
+  .tarjeta-vacia {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 20px;
+    width: 100%;
+    height: 100%;
+  }
+  .tarjeta-vacia :global(svg) {
+    width: clamp(70px, 9vw, 130px);
+    height: auto;
+    transition: transform 1s var(--ease-out);
+  }
+  .tarjeta:hover .tarjeta-vacia :global(svg) {
+    transform: translate(-6px, -4.5px);
+  }
+  .tarjeta-vacia .etiqueta {
+    font-size: 10px;
+    opacity: 0.6;
+  }
+  .tarjeta--moments .tarjeta-vacia {
+    background: var(--grafito);
+    color: var(--dorado);
+  }
+  .tarjeta--business .tarjeta-vacia {
+    background: var(--blanco);
+    color: var(--petroleo);
+  }
+
+  .tarjeta-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding-top: 18px;
+  }
+  .tarjeta-info h3 {
+    font-size: clamp(20px, 1.8vw, 28px);
+    letter-spacing: -0.02em;
+  }
+  .tarjeta-meta {
+    font-size: 14px;
+    color: var(--gris-calido);
+  }
+
+  @media (max-width: 820px) {
+    .tarjeta,
+    .tarjeta--ancha,
+    .tarjeta:nth-child(4),
+    .tarjeta:nth-child(4).tarjeta--ancha {
+      grid-column: 1 / -1;
+      margin-top: 0;
+    }
+  }
+</style>

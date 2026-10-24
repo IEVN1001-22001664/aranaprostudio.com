@@ -1,0 +1,67 @@
+---
+import Isotipo from "./Isotipo.astro";
+
+const palabras = ["Creativity", "Technology", "Results"];
+const colores = ["var(--marfil)", "var(--dorado)", "var(--petroleo-claro)"];
+// Se repite para cubrir pantallas anchas; el JS desplaza una pista sin cortes.
+const repeticiones = Array.from({ length: 3 });
+---
+
+<section class="marquesina" data-tema="oscuro" aria-label="Creativity, Technology, Results">
+  <div class="marquesina-pista" data-marquesina>
+    {
+      [0, 1].map(() => (
+        <div class="marquesina-grupo" aria-hidden="true">
+          {repeticiones.map(() =>
+            palabras.map((p, i) => (
+              <span class="marquesina-item">
+                <span class="titulo">{p}</span>
+                <span class="marquesina-iso" style={`color:${colores[i]}`}>
+                  <Isotipo />
+                </span>
+              </span>
+            )),
+          )}
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .marquesina {
+    background: var(--carbon);
+    color: var(--marfil);
+    padding-block: clamp(26px, 4vh, 44px);
+    overflow: hidden;
+  }
+  .marquesina-pista {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+  .marquesina-grupo {
+    display: flex;
+    flex-shrink: 0;
+  }
+  .marquesina-item {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(22px, 3vw, 48px);
+    padding-right: clamp(22px, 3vw, 48px);
+  }
+  .marquesina-item .titulo {
+    font-size: clamp(42px, 7vw, 120px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+  .marquesina-iso {
+    width: clamp(30px, 4vw, 64px);
+    flex-shrink: 0;
+  }
+  .marquesina-iso :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+</style>

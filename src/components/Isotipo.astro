@@ -1,0 +1,23 @@
+---
+// Isotipo oficial en un solo color (hereda `color`). Las dos piezas quedan
+// separadas para poder animarlas sin deformarlas.
+import { ISO_ACENTO, ISO_ESTRUCTURA } from "../lib/marca";
+
+interface Props {
+  class?: string;
+  titulo?: string;
+}
+const { class: clase, titulo } = Astro.props;
+---
+
+<svg
+  class:list={["isotipo", clase]}
+  viewBox="0 0 628 530"
+  fill="currentColor"
+  role={titulo ? "img" : undefined}
+  aria-hidden={titulo ? undefined : "true"}
+  aria-label={titulo}
+>
+  <path class="iso-estructura" d={ISO_ESTRUCTURA}></path>
+  <path class="iso-acento" d={ISO_ACENTO}></path>
+</svg>

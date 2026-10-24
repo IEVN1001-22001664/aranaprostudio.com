@@ -1,0 +1,158 @@
+---
+import { PROCESO } from "../lib/sitio";
+---
+
+<section class="proceso" id="proceso" data-tema="oscuro" data-proceso>
+  <div class="proceso-escena">
+    <div class="proceso-cabeza contenedor">
+      <p class="etiqueta">04 · Proceso</p>
+      <div class="proceso-avance" aria-hidden="true"><i data-proceso-barra></i></div>
+    </div>
+
+    <div class="proceso-pista" data-proceso-pista>
+      <div class="paso paso--intro">
+        <h2 class="titulo">De la idea<br />al resultado,<br /><span>sin vueltas.</span></h2>
+        <p>Cuatro pasos claros. Sabes qué sigue y cuándo lo recibes.</p>
+      </div>
+      {
+        PROCESO.map((p, i) => (
+          <article class="paso">
+            <span class="paso-num titulo" aria-hidden="true">
+              0{i + 1}
+            </span>
+            <div class="paso-texto">
+              <h3 class="titulo">{p.titulo}</h3>
+              <p>{p.texto}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .proceso {
+    position: relative;
+    background: var(--grafito);
+    color: var(--marfil);
+  }
+  .proceso-escena {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(30px, 6vh, 70px);
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-block: 110px 60px;
+    overflow: hidden;
+  }
+  .proceso-cabeza {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .proceso-cabeza .etiqueta {
+    color: var(--dorado);
+    flex-shrink: 0;
+  }
+  .proceso-avance {
+    position: relative;
+    flex: 1;
+    height: 1px;
+    background: var(--linea-oscura);
+  }
+  .proceso-avance i {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--marfil), var(--dorado), var(--petroleo-claro));
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+
+  .proceso-pista {
+    display: flex;
+    gap: clamp(16px, 2vw, 28px);
+    width: max-content;
+    padding-inline: var(--gutter);
+    will-change: transform;
+  }
+  .paso {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: clamp(290px, 31vw, 480px);
+    min-height: clamp(380px, 56vh, 560px);
+    padding: clamp(24px, 2.6vw, 40px);
+    border-radius: 10px;
+    background: var(--carbon);
+    overflow: hidden;
+  }
+  /* Corte a 37° en la esquina, como la pieza de acento */
+  .paso::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: calc(120px * var(--tan37));
+    background: var(--grafito);
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+  }
+  .paso:nth-child(3n + 2) .paso-num {
+    color: var(--dorado);
+  }
+  .paso:nth-child(3n + 3) .paso-num {
+    color: var(--petroleo-claro);
+  }
+  .paso--intro {
+    background: none;
+    justify-content: center;
+    gap: 28px;
+    width: clamp(300px, 38vw, 620px);
+  }
+  .paso--intro::after {
+    display: none;
+  }
+  .paso--intro h2 {
+    font-size: clamp(34px, 4.2vw, 72px);
+    letter-spacing: -0.035em;
+  }
+  .paso--intro h2 span {
+    color: var(--dorado);
+  }
+  .paso--intro p {
+    max-width: 34ch;
+    color: rgb(244 241 234 / 0.7);
+  }
+  .paso-num {
+    font-size: clamp(80px, 9vw, 160px);
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+    color: var(--marfil);
+  }
+  .paso-texto h3 {
+    font-size: clamp(24px, 2.2vw, 36px);
+    margin-bottom: 12px;
+  }
+  .paso-texto p {
+    color: rgb(244 241 234 / 0.72);
+    max-width: 30ch;
+  }
+
+  /* Sin animación o pantallas pequeñas: desplazamiento horizontal nativo */
+  :global(html:not(.js-anim)) .proceso-pista,
+  .proceso.nativo .proceso-pista {
+    width: auto;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+  :global(html:not(.js-anim)) .paso,
+  .proceso.nativo .paso {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+</style>

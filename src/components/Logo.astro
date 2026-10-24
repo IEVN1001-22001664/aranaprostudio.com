@@ -1,0 +1,18 @@
+---
+// Logotipo oficial: isotipo + divisor + APS en trazos. Un solo color (`color`).
+import { ISO_ACENTO, ISO_ESTRUCTURA, LETRAS_APS, LOGO_DIVISOR, LOGO_ISO_TRANSFORM } from "../lib/marca";
+
+interface Props {
+  class?: string;
+}
+const { class: clase } = Astro.props;
+---
+
+<svg class:list={["logo", clase]} viewBox="0 0 312 90" fill="currentColor" role="img" aria-label="APS · AranaProStudio">
+  <g class="logo-iso" transform={LOGO_ISO_TRANSFORM}>
+    <path d={ISO_ESTRUCTURA}></path>
+    <path d={ISO_ACENTO}></path>
+  </g>
+  <rect class="logo-divisor" {...LOGO_DIVISOR}></rect>
+  <path class="logo-letras" d={LETRAS_APS}></path>
+</svg>

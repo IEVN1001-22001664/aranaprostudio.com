@@ -1,0 +1,60 @@
+---
+import Isotipo from "./Isotipo.astro";
+---
+
+<div class="intro" data-intro aria-hidden="true">
+  <div class="intro-centro">
+    <Isotipo class="intro-iso" />
+    <div class="intro-pie">
+      <span class="etiqueta">AranaProStudio</span>
+      <span class="intro-contador titulo"><span data-intro-num>0</span>%</span>
+    </div>
+  </div>
+  <div class="intro-lema etiqueta">Creativity · Technology · Results</div>
+</div>
+
+<style>
+  .intro {
+    display: none;
+  }
+  :global(.js-anim:not(.sin-intro)) .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    display: grid;
+    place-items: center;
+    background: var(--grafito);
+    color: var(--marfil);
+  }
+  .intro-centro {
+    display: grid;
+    gap: 28px;
+    justify-items: center;
+  }
+  .intro :global(.intro-iso) {
+    width: clamp(110px, 14vw, 170px);
+    overflow: visible;
+  }
+  .intro-pie {
+    display: flex;
+    align-items: baseline;
+    gap: 22px;
+    color: rgb(244 241 234 / 0.6);
+  }
+  .intro-contador {
+    font-size: 14px;
+    color: var(--marfil);
+    min-width: 4ch;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .intro-lema {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    color: rgb(244 241 234 / 0.4);
+    font-size: 11px;
+  }
+</style>

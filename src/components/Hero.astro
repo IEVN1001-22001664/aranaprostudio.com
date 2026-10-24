@@ -1,0 +1,253 @@
+---
+import Isotipo from "./Isotipo.astro";
+import { SITIO } from "../lib/sitio";
+
+// Retícula de construcción: diagonales a 37° como en la lámina del isotipo.
+const tan = Math.tan((37 * Math.PI) / 180);
+const diagonales = [-0.35, 0.05, 0.45, 0.85].map((x0) => ({
+  x1: x0 * 1600,
+  y1: 0,
+  x2: x0 * 1600 + 900 / tan,
+  y2: 900,
+}));
+---
+
+<section class="hero" id="inicio" data-tema="oscuro" data-hero>
+  <svg class="hero-reticula" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g class="reticula-lineas">
+      <line x1="0" y1="180" x2="1600" y2="180"></line>
+      <line x1="0" y1="720" x2="1600" y2="720"></line>
+      <line x1="200" y1="0" x2="200" y2="900"></line>
+      <line x1="1400" y1="0" x2="1400" y2="900"></line>
+    </g>
+    <g class="reticula-diagonales">
+      {diagonales.map((d) => <line x1={d.x1} y1={d.y1} x2={d.x2} y2={d.y2} />)}
+    </g>
+  </svg>
+
+  <div class="hero-iso" data-hero-iso aria-hidden="true">
+    <Isotipo />
+  </div>
+
+  <div class="hero-contenido contenedor">
+    <p class="hero-eyebrow etiqueta" data-hero-sube>
+      <span>APS · AranaProStudio</span>
+      <span class="sep" aria-hidden="true"></span>
+      <span class="hero-ciudad">León, Gto.</span>
+    </p>
+
+    <h1 class="hero-titulo titulo" data-hero-titulo>
+      <span class="linea">Vision</span>
+      <span class="linea">into <em>results.</em></span>
+    </h1>
+
+    <div class="hero-bajo">
+      <p class="hero-texto" data-hero-sube>
+        Imagen, video y soluciones digitales de nivel profesional, entregadas rápido. Para personas y negocios que
+        quieren verse a la altura de lo que valen.
+      </p>
+      <div class="hero-acciones" data-hero-sube>
+        <a href="#contacto" class="boton" data-magnetico>
+          Platiquemos tu proyecto
+          <svg class="flecha" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"
+            ><path d="M1 8h13M9 3l5 5-5 5"></path></svg
+          >
+        </a>
+        <a href="#lineas" class="boton boton--contorno" data-magnetico>Ver servicios</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-pie contenedor" data-hero-sube>
+    <div class="hero-lema">
+      <div class="barras" aria-hidden="true"><span></span><span></span><span></span></div>
+      <span class="etiqueta">{SITIO.lema}</span>
+    </div>
+    <div class="hero-scroll etiqueta" aria-hidden="true">
+      <span>Desliza</span>
+      <span class="hero-scroll-linea"><i></i></span>
+    </div>
+    <div class="hero-hora etiqueta">
+      <span>León</span>
+      <time data-reloj>--:--</time>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: var(--grafito);
+    color: var(--marfil);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .hero-reticula {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+  }
+  .hero-reticula line {
+    stroke: rgb(244 241 234 / 0.07);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .reticula-diagonales line {
+    stroke: rgb(79 163 171 / 0.22);
+    stroke-dasharray: 6 8;
+  }
+
+  /* Isotipo tono sobre tono, recortado como en la portada del manual */
+  .hero-iso {
+    position: absolute;
+    right: -8vw;
+    bottom: -14vh;
+    z-index: -1;
+    width: min(78vw, 1050px);
+    color: var(--carbon-suave);
+    will-change: transform;
+  }
+  .hero-iso :global(.isotipo) {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .hero-contenido {
+    padding-top: 140px;
+    padding-bottom: clamp(40px, 7vh, 90px);
+  }
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: rgb(244 241 234 / 0.62);
+    margin-bottom: clamp(20px, 3vh, 36px);
+  }
+  .sep {
+    width: 36px;
+    height: 1px;
+    background: var(--dorado);
+  }
+  .hero-titulo {
+    font-size: clamp(40px, 11.6vw, 216px);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+  }
+  .hero-titulo .linea {
+    display: block;
+  }
+  .hero-titulo em {
+    font-style: normal;
+    color: var(--dorado);
+  }
+
+  .hero-bajo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px;
+    margin-top: clamp(28px, 5vh, 56px);
+  }
+  .hero-texto {
+    max-width: 46ch;
+    font-size: clamp(17px, 1.35vw, 21px);
+    line-height: 1.55;
+    color: rgb(244 241 234 / 0.78);
+  }
+  .hero-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .hero-pie {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 20px;
+    padding-top: 22px;
+    padding-bottom: 28px;
+    border-top: 1px solid var(--linea-oscura);
+    color: rgb(244 241 234 / 0.6);
+  }
+  .hero-pie .etiqueta {
+    font-size: 11px;
+  }
+  .hero-lema {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .hero-lema .barras span {
+    width: 28px;
+    height: 3px;
+  }
+  .hero-scroll {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-scroll-linea {
+    position: relative;
+    width: 56px;
+    height: 1px;
+    background: var(--linea-oscura);
+    overflow: hidden;
+  }
+  .hero-scroll-linea i {
+    position: absolute;
+    inset: 0;
+    background: var(--dorado);
+    animation: recorre 2.2s var(--ease-in-out) infinite;
+  }
+  @keyframes recorre {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  .hero-hora {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    font-variant-numeric: tabular-nums;
+  }
+  .hero-hora time {
+    color: var(--marfil);
+  }
+
+  @media (max-width: 720px) {
+    .sep,
+    .hero-ciudad {
+      display: none;
+    }
+    .hero-lema .etiqueta {
+      letter-spacing: 0.16em;
+    }
+    .hero-pie {
+      grid-template-columns: 1fr auto;
+    }
+    .hero-scroll {
+      display: none;
+    }
+    .hero-lema .barras {
+      display: none;
+    }
+    .hero-iso {
+      width: 125vw;
+      right: -45vw;
+      bottom: 18vh;
+    }
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+import Base from "../layouts/Base.astro";
+import Isotipo from "../components/Isotipo.astro";
+---
+
+<Base titulo="Página no encontrada · APS" descripcion="Esta página no existe. Vuelve al inicio de APS · AranaProStudio.">
+  <main class="no-encontrada" id="contenido">
+    <Isotipo class="ne-iso" />
+    <p class="etiqueta">Error 404</p>
+    <h1 class="titulo">Esta página<br />no existe.</h1>
+    <p class="ne-texto">Pero tu proyecto sí puede. Vuelve al inicio y platiquemos.</p>
+    <a href="/" class="boton">Volver al inicio</a>
+  </main>
+</Base>
+
+<style>
+  .no-encontrada {
+    min-height: 100svh;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 22px;
+    padding: 40px var(--gutter);
+    text-align: center;
+    background: var(--grafito);
+    color: var(--marfil);
+  }
+  .no-encontrada :global(.ne-iso) {
+    width: 90px;
+    color: var(--dorado);
+    margin-bottom: 12px;
+  }
+  .etiqueta {
+    color: var(--dorado);
+  }
+  h1 {
+    font-size: clamp(40px, 7vw, 110px);
+    letter-spacing: -0.04em;
+  }
+  .ne-texto {
+    color: rgb(244 241 234 / 0.7);
+    margin-bottom: 12px;
+  }
+</style>

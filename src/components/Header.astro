@@ -1,0 +1,215 @@
+---
+import Logo from "./Logo.astro";
+import { NAV, SITIO } from "../lib/sitio";
+---
+
+<header class="cabecera" data-cabecera>
+  <div class="cabecera-barra">
+    <a href="#inicio" class="cabecera-logo" aria-label="APS · Ir al inicio" data-magnetico>
+      <Logo />
+    </a>
+
+    <nav class="cabecera-nav" aria-label="Principal">
+      <ul>
+        {
+          NAV.map((item) => (
+            <li>
+              <a href={item.href} class="enlace">
+                {item.texto}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a href="#contacto" class="cabecera-cta" data-magnetico>
+      <span class="punto" aria-hidden="true"></span>
+      Contacto
+    </a>
+
+    <button class="cabecera-menu" type="button" aria-expanded="false" aria-controls="menu-movil" data-menu-boton>
+      <span class="sr-only">Abrir menú</span>
+      <span class="lineas" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+</header>
+
+<div class="menu" id="menu-movil" data-menu hidden>
+  <nav aria-label="Menú">
+    <ul>
+      {
+        [...NAV, { texto: "Contacto", href: "#contacto" }].map((item, i) => (
+          <li>
+            <a href={item.href} data-menu-enlace>
+              <span class="menu-num">0{i + 1}</span>
+              <span class="titulo">{item.texto}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+  <div class="menu-pie">
+    <a href={`mailto:${SITIO.correo}`}>{SITIO.correo}</a>
+    <span class="etiqueta">{SITIO.lema}</span>
+  </div>
+</div>
+
+<style>
+  .cabecera {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 100;
+    color: var(--marfil);
+    transition:
+      transform 0.6s var(--ease-out),
+      color 0.4s ease;
+  }
+  .cabecera.oculta {
+    transform: translateY(-110%);
+  }
+  .cabecera[data-tema="claro"] {
+    color: var(--carbon);
+  }
+  .cabecera-barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px var(--gutter);
+    transition:
+      padding 0.4s var(--ease-out),
+      background 0.4s ease;
+  }
+  .cabecera.compacta .cabecera-barra {
+    padding-block: 14px;
+    background: rgb(42 47 49 / 0.72);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+  }
+  .cabecera.compacta[data-tema="claro"] .cabecera-barra {
+    background: rgb(244 241 234 / 0.78);
+  }
+  /* 120 px: tamaño mínimo del logo completo en pantalla */
+  .cabecera-logo :global(.logo) {
+    width: 124px;
+    height: auto;
+  }
+  .cabecera-nav ul {
+    display: flex;
+    gap: clamp(20px, 2.6vw, 44px);
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .cabecera-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px currentColor;
+    font-size: 14px;
+    font-weight: 500;
+    transition:
+      background 0.4s ease,
+      color 0.4s ease;
+  }
+  .cabecera-cta:hover {
+    background: var(--marfil);
+    color: var(--carbon);
+  }
+  .cabecera[data-tema="claro"] .cabecera-cta:hover {
+    background: var(--carbon);
+    color: var(--marfil);
+  }
+  .punto {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--dorado);
+    animation: latido 2.4s ease-in-out infinite;
+  }
+  @keyframes latido {
+    50% {
+      opacity: 0.35;
+    }
+  }
+  .cabecera-menu {
+    display: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
+  .lineas {
+    display: grid;
+    gap: 6px;
+    width: 18px;
+    margin: auto;
+  }
+  .lineas i {
+    display: block;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.5s var(--ease-out);
+  }
+  .cabecera-menu[aria-expanded="true"] .lineas i:first-child {
+    transform: translateY(3.75px) rotate(37deg);
+  }
+  .cabecera-menu[aria-expanded="true"] .lineas i:last-child {
+    transform: translateY(-3.75px) rotate(-37deg);
+  }
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 120px var(--gutter) 36px;
+    background: var(--grafito);
+    color: var(--marfil);
+  }
+  .menu[hidden] {
+    display: none;
+  }
+  .menu ul {
+    display: grid;
+    gap: 6px;
+  }
+  .menu a[data-menu-enlace] {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--linea-oscura);
+  }
+  .menu .titulo {
+    font-size: clamp(32px, 9vw, 54px);
+  }
+  .menu-num {
+    font-size: 12px;
+    color: var(--dorado);
+    font-variant-numeric: tabular-nums;
+  }
+  .menu-pie {
+    display: grid;
+    gap: 10px;
+    color: rgb(244 241 234 / 0.6);
+  }
+  .menu-pie .etiqueta {
+    font-size: 10px;
+  }
+
+  @media (max-width: 900px) {
+    .cabecera-nav,
+    .cabecera-cta {
+      display: none;
+    }
+    .cabecera-menu {
+      display: grid;
+    }
+  }
+</style>
