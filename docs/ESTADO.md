@@ -48,7 +48,7 @@ _Última actualización: 5 de noviembre de 2026_
 
 ## Pendientes del usuario
 
-- [ ] Crear la cuenta FTP en Hostinger y cargar los Secrets en GitHub (ver `docs/DESPLIEGUE.md`).
+- [x] Crear la cuenta FTP en Hostinger y cargar los Secrets en GitHub (5 de noviembre de 2026). Se usa la cuenta FTP con directorio `public_html` (usuario con prefijo), con la IP del servidor como host y sin `FTP_DIR`. El primer despliegue terminó bien.
 - [ ] Agregar en Cloudflare el registro A de `@` y el CNAME de `www` apuntando a Hostinger, y activar el SSL.
 - [ ] Confirmar que el buzón `hola@aranaprostudio.com` existe en Hostinger Mail.
 - [ ] Confirmar las cuentas de Instagram (@aps.moments y @aps.business) y si hay LinkedIn.
