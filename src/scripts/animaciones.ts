@@ -103,6 +103,24 @@ function iniciarFiltros() {
   );
 }
 
+// Filtro de los planes de APS Business (bloque CatalogoBusiness). Ocultar tarjetas cambia
+// el alto de la página: con animaciones, ScrollTrigger recalcula las secciones fijadas
+// que vienen después (Proceso).
+function iniciarFiltrosCatalogo() {
+  const grupo = $("[data-catalogo-filtros]");
+  if (!grupo) return;
+  const botones = $$<HTMLButtonElement>("button", grupo);
+  const planes = $$("[data-catalogo] > [data-categoria]");
+  botones.forEach((b) =>
+    b.addEventListener("click", () => {
+      const categoria = b.dataset.categoria;
+      botones.forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
+      planes.forEach((p) => (p.hidden = Boolean(categoria) && p.dataset.categoria !== categoria));
+      if (conMovimiento) ScrollTrigger.refresh();
+    }),
+  );
+}
+
 function iniciarAnclas() {
   $$<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
     a.addEventListener("click", (e) => {
@@ -587,6 +605,7 @@ async function iniciar() {
   iniciarReloj();
   iniciarMenu();
   iniciarFiltros();
+  iniciarFiltrosCatalogo();
 
   if (!conMovimiento) {
     iniciarAnclas();

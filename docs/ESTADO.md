@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-_Última actualización: 24 de octubre de 2026_
+_Última actualización: 5 de noviembre de 2026_
 
 ## Hecho
 
@@ -27,12 +27,22 @@ _Última actualización: 24 de octubre de 2026_
 - GitHub Actions: compila en cada push y despliega por FTP cuando existen los Secrets.
 - Accesibilidad: con `prefers-reduced-motion` o sin JS todo el contenido se ve estático; hay enlace para saltar al contenido.
 
+### Planes de APS Business desde AppWorkflow (5 de noviembre de 2026)
+- Bloque **«APS Business · Planes»** dentro de Servicios (`src/components/CatalogoBusiness.astro`), debajo de la lista: tarjetas con imagen, categoría, descripción, beneficios, precio «Desde … MXN» y botón **Cotizar** por WhatsApp (`SITIO.whatsapp`) con el nombre del servicio en el mensaje.
+- Filtros por categoría (si hay dos o más), con `ScrollTrigger.refresh()` al filtrar para que la sección fijada de Proceso no se desfase.
+- Los datos vienen de `https://appworkflow-pi.vercel.app/api/catalogo` (`src/lib/catalogo.ts`): lo que se marque como **Publicado en web** en AppWorkflow → Servicios. Si no hay nada publicado, el bloque no aparece.
+- Se leen **al compilar**: compilación diaria a la 01:17 de CDMX (`schedule` en `desplegar.yml`) y a mano con **Actions → Compilar y desplegar → Run workflow**.
+- Si la API no responde, **el build falla a propósito** y en Hostinger se queda la versión anterior.
+- Para compilar contra otra instancia: `CATALOGO_API=http://localhost:3200/api/catalogo pnpm build`.
+
 ## Decisiones
 
 - **Astro estático en lugar de Next.js**: es un sitio de presentación sin backend. Genera HTML puro, ideal para el hosting compartido de Hostinger.
 - **El isotipo solo se traslada o escala**: así se cumple la regla de no deformar ni rotar.
 - **La intro se muestra una vez por sesión** (`sessionStorage`).
 - **Correo de contacto `hola@aranaprostudio.com`**: el manual muestra `info@aps.com`, que parece un marcador; el registro DMARC usa `hola@`.
+- **Planes de Business al compilar y no en el navegador**: el HTML queda completo para Google y para GSAP (sin saltos de ScrollTrigger), y el sitio no depende de AppWorkflow para cargar. A cambio, los cambios tardan hasta un día o una ejecución manual del workflow.
+- **Los planes son de Business**: las tarjetas usan petróleo y la franja a 37°; la lista de Servicios de arriba sigue mostrando las dos líneas.
 - **El contacto es por enlaces** (correo, WhatsApp y teléfono), sin formulario por ahora.
 
 ## Pendientes del usuario

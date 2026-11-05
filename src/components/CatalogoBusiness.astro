@@ -1,0 +1,251 @@
+---
+// Planes de APS Business con precios, desde AppWorkflow (ver src/lib/catalogo.ts).
+// Si no hay nada publicado, el bloque no se muestra.
+import { SITIO } from "../lib/sitio";
+import { formatoPrecio, leerCatalogo, POR_UNIDAD, type ServicioCatalogo } from "../lib/catalogo";
+
+const servicios = await leerCatalogo();
+const categorias = [...new Set(servicios.map((s) => s.categoria).filter((c): c is string => Boolean(c)))];
+
+const cotizar = (s: ServicioCatalogo) =>
+  `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(`Hola, me interesa una cotización de «${s.nombre}».`)}`;
+---
+
+{
+  servicios.length > 0 && (
+    <div class="catalogo" id="planes">
+      <div class="catalogo-cabeza">
+        <div>
+          <p class="etiqueta" data-revelar>
+            APS Business · Planes
+          </p>
+          <h3 class="titulo" data-dividir>
+            Precios claros,
+            <br />
+            desde el inicio.
+          </h3>
+        </div>
+        <p class="catalogo-intro" data-revelar>
+          Puntos de partida para tu negocio. Cada proyecto se cotiza a la medida, sin sorpresas.
+        </p>
+      </div>
+
+      {categorias.length > 1 && (
+        <div class="filtros" role="group" aria-label="Filtrar planes" data-catalogo-filtros>
+          <button type="button" aria-pressed="true" data-categoria="">
+            Todos
+          </button>
+          {categorias.map((c) => (
+            <button type="button" aria-pressed="false" data-categoria={c}>
+              {c}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <ul class="rejilla" data-catalogo data-revelar>
+        {servicios.map((s) => (
+          <li class="plan" id={`plan-${s.slug}`} data-categoria={s.categoria ?? ""}>
+            {s.imagen_url && <img class="plan-img" src={s.imagen_url} alt="" loading="lazy" decoding="async" />}
+            <div class="plan-cuerpo">
+              {s.categoria && <span class="plan-cat etiqueta">{s.categoria}</span>}
+              <h4 class="plan-nombre titulo">{s.nombre}</h4>
+              {s.descripcion && <p class="plan-desc">{s.descripcion}</p>}
+              {s.beneficios.length > 0 && (
+                <ul class="plan-beneficios">
+                  {s.beneficios.map((b) => (
+                    <li>{b}</li>
+                  ))}
+                </ul>
+              )}
+              <div class="plan-pie">
+                <p class="plan-precio">
+                  {s.precio !== null ? (
+                    <>
+                      <span>Desde</span>
+                      <strong class="titulo">{formatoPrecio(s.precio)}</strong>
+                      <span>{POR_UNIDAD[s.unidad]}</span>
+                    </>
+                  ) : (
+                    <strong class="titulo">A la medida</strong>
+                  )}
+                </p>
+                <a
+                  class="boton plan-cta"
+                  href={cotizar(s)}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={`Cotizar ${s.nombre} por WhatsApp`}
+                  data-magnetico
+                >
+                  Cotizar
+                  <svg class="flecha" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path d="M1 8h13M9 3l5 5-5 5" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+<style>
+  .catalogo {
+    margin-top: clamp(90px, 14vh, 170px);
+  }
+  .catalogo-cabeza {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px 48px;
+    margin-bottom: clamp(28px, 5vh, 52px);
+  }
+  .catalogo-cabeza .etiqueta {
+    color: var(--petroleo);
+    margin-bottom: 22px;
+  }
+  .catalogo-cabeza h3 {
+    font-size: clamp(30px, 4.4vw, 72px);
+    letter-spacing: -0.035em;
+  }
+  .catalogo-intro {
+    max-width: 38ch;
+    color: var(--gris-calido);
+  }
+
+  .filtros {
+    display: inline-flex;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 6px;
+    padding: 5px;
+    margin-bottom: 28px;
+    border-radius: 999px;
+    background: var(--blanco);
+  }
+  .filtros button {
+    flex-shrink: 0;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    transition:
+      background 0.4s ease,
+      color 0.4s ease;
+  }
+  .filtros button[aria-pressed="true"] {
+    background: var(--petroleo);
+    color: var(--marfil);
+  }
+
+  .rejilla {
+    display: grid;
+    gap: clamp(16px, 2vw, 28px);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  }
+  .plan {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--radio);
+    background: var(--blanco);
+    box-shadow: inset 0 0 0 1px var(--linea-clara);
+    isolation: isolate;
+  }
+  .plan[hidden] {
+    display: none;
+  }
+  /* Franja de Business: la diagonal de 37° de la marca */
+  .plan::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 64px;
+    height: calc(64px * var(--tan37));
+    background: var(--petroleo);
+    clip-path: polygon(100% 0, 100% 100%, 0 0);
+    opacity: 0.9;
+  }
+  .plan-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    background: var(--marfil);
+  }
+  .plan-cuerpo {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 14px;
+    padding: clamp(22px, 2.4vw, 32px);
+  }
+  .plan-cat {
+    font-size: 10px;
+    color: var(--petroleo);
+  }
+  .plan-nombre {
+    font-size: clamp(21px, 1.9vw, 28px);
+    letter-spacing: -0.025em;
+    padding-right: 36px;
+  }
+  .plan-desc {
+    color: var(--gris-calido);
+    max-width: 46ch;
+  }
+  .plan-beneficios {
+    display: grid;
+    gap: 8px;
+    font-size: 15px;
+  }
+  .plan-beneficios li {
+    position: relative;
+    padding-left: 22px;
+  }
+  /* Viñeta: un trazo corto a 37°, como las diagonales del isotipo */
+  .plan-beneficios li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 12px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--petroleo);
+    transform: rotate(calc(var(--angulo) * -1));
+  }
+  .plan-pie {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid var(--linea-clara);
+  }
+  .plan-precio {
+    display: grid;
+    gap: 2px;
+    font-size: 13px;
+    color: var(--gris-calido);
+  }
+  .plan-precio strong {
+    font-size: clamp(22px, 2vw, 30px);
+    color: var(--carbon);
+    letter-spacing: -0.03em;
+  }
+  .plan-cta {
+    --b-fondo: var(--petroleo);
+    --b-texto: var(--marfil);
+    --b-relleno: var(--grafito);
+    padding: 14px 22px;
+  }
+</style>
