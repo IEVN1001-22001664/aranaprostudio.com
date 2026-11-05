@@ -29,6 +29,7 @@ _Última actualización: 5 de noviembre de 2026_
 
 ### Planes de APS Business desde AppWorkflow (5 de noviembre de 2026)
 - Bloque **«APS Business · Planes»** dentro de Servicios (`src/components/CatalogoBusiness.astro`), debajo de la lista: tarjetas con imagen, categoría, descripción, beneficios, precio «Desde … MXN» y botón **Cotizar** por WhatsApp (`SITIO.whatsapp`) con el nombre del servicio en el mensaje.
+- Los precios de AppWorkflow son sin IVA: cada tarjeta dice «+ IVA · por proyecto» y la introducción lo aclara.
 - Filtros por categoría (si hay dos o más), con `ScrollTrigger.refresh()` al filtrar para que la sección fijada de Proceso no se desfase.
 - Los datos vienen de `https://appworkflow-pi.vercel.app/api/catalogo` (`src/lib/catalogo.ts`): lo que se marque como **Publicado en web** en AppWorkflow → Servicios. Si no hay nada publicado, el bloque no aparece.
 - Se leen **al compilar**: compilación diaria a la 01:17 de CDMX (`schedule` en `desplegar.yml`) y a mano con **Actions → Compilar y desplegar → Run workflow**.

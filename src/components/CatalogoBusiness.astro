@@ -26,7 +26,7 @@ const cotizar = (s: ServicioCatalogo) =>
           </h3>
         </div>
         <p class="catalogo-intro" data-revelar>
-          Puntos de partida para tu negocio. Cada proyecto se cotiza a la medida, sin sorpresas.
+          Puntos de partida para tu negocio, más IVA. Cada proyecto se cotiza a la medida, sin sorpresas.
         </p>
       </div>
 
@@ -64,7 +64,7 @@ const cotizar = (s: ServicioCatalogo) =>
                     <>
                       <span>Desde</span>
                       <strong class="titulo">{formatoPrecio(s.precio)}</strong>
-                      <span>{POR_UNIDAD[s.unidad]}</span>
+                      <span>+ IVA · {POR_UNIDAD[s.unidad]}</span>
                     </>
                   ) : (
                     <strong class="titulo">A la medida</strong>
