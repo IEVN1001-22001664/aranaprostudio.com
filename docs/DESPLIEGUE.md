@@ -25,6 +25,12 @@ Repositorio → **Settings → Secrets and variables → Actions → New reposit
 
 Mientras no existan, el workflow compila y avisa, pero no despliega.
 
+### Si el paso de FTP falla con `ECONNRESET`
+
+Es un corte pasajero entre GitHub y el FTP de Hostinger, no un problema del sitio ni de las credenciales. El workflow reintenta solo hasta dos veces (con 45 s y 90 s de pausa) y cada intento sube únicamente lo que falte, sin borrar nada. Si fallan los tres, vuelve a correrlo más tarde (**Re-run failed jobs**); el sitio publicado no se toca mientras tanto.
+
+Que el registro diga «No file exists on the server ./.ftp-deploy-sync-state.json» en esos casos tampoco es grave: la acción no pudo leer ese archivo por el mismo corte y lo trata como primera publicación (vuelve a subir todo).
+
 ## 3. DNS (Cloudflare)
 
 El correo ya apunta a Hostinger (MX, SPF, DKIM y DMARC). Para la web faltan:

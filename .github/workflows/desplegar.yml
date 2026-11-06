@@ -31,8 +31,13 @@ jobs:
       - run: pnpm build
 
       # Sube /dist a Hostinger solo en main y solo si ya existen los Secrets.
+      # El FTP de Hostinger a veces corta la conexión de datos desde GitHub (ECONNRESET).
+      # Es pasajero: se reintenta hasta dos veces con una pausa. Cada intento sube solo lo
+      # que falte y nunca borra nada del servidor (dangerous-clean-slate: false).
       - name: Desplegar a Hostinger por FTP
+        id: ftp1
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && env.FTP_SERVER != ''
+        continue-on-error: true
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -42,6 +47,43 @@ jobs:
           local-dir: ./dist/
           server-dir: ${{ secrets.FTP_DIR || './' }}
           dangerous-clean-slate: false
+          timeout: 120000
+
+      - name: Esperar antes de reintentar
+        if: steps.ftp1.outcome == 'failure'
+        run: sleep 45
+
+      - name: Reintentar el despliegue (2.º intento)
+        id: ftp2
+        if: steps.ftp1.outcome == 'failure'
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ secrets.FTP_PROTOCOL || 'ftps' }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_DIR || './' }}
+          dangerous-clean-slate: false
+          timeout: 120000
+
+      - name: Esperar antes del último intento
+        if: steps.ftp2.outcome == 'failure'
+        run: sleep 90
+
+      - name: Reintentar el despliegue (3.er intento)
+        if: steps.ftp2.outcome == 'failure'
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ secrets.FTP_PROTOCOL || 'ftps' }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_DIR || './' }}
+          dangerous-clean-slate: false
+          timeout: 120000
 
       - name: Aviso si faltan Secrets
         if: github.event_name != 'pull_request' && env.FTP_SERVER == ''

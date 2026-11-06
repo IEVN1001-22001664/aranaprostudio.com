@@ -36,6 +36,9 @@ _Última actualización: 5 de noviembre de 2026_
 - Si la API no responde, **el build falla a propósito** y en Hostinger se queda la versión anterior.
 - Para compilar contra otra instancia: `CATALOGO_API=http://localhost:3200/api/catalogo pnpm build`.
 
+### Despliegue con reintentos (6 de noviembre de 2026)
+- El despliegue programado del 6 de noviembre falló con `ECONNRESET` en la conexión de datos FTP (corte pasajero de Hostinger; el sitio publicado no se tocó). El paso de FTP ahora reintenta hasta dos veces con pausa y tiene un `timeout` de 120 s.
+
 ## Decisiones
 
 - **Astro estático en lugar de Next.js**: es un sitio de presentación sin backend. Genera HTML puro, ideal para el hosting compartido de Hostinger.
